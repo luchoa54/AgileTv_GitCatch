@@ -1,19 +1,16 @@
 //
-//  ViewController.swift
+//  DetailsUserViewController.swift
 //  AgileTv_GitCatch
 //
 //  Created by Luciano Uchoa on 05/02/25.
 //
 
+import Foundation
 import UIKit
 
-class ViewController: UIViewController {
-
+class DetailsUserViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
 }
-
