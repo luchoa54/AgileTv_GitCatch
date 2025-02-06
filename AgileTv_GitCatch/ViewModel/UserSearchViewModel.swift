@@ -11,7 +11,7 @@ import RxCocoa
 
 class UserSearchViewModel {
     
-    private var userSearchProvider: UserSearchProviderProtocol?
+    private var userSearchService: UserSearchServiceProtocol
     
     // Variáveis observáveis
     public let user: PublishSubject<UserModel> = PublishSubject()
@@ -21,23 +21,26 @@ class UserSearchViewModel {
     public let disposeBag = DisposeBag()
     
     // Init
-    init(userSearchProvider: UserSearchProviderProtocol) {
-        self.userSearchProvider = userSearchProvider
+    public static let shared = UserSearchViewModel(userSearchService: UserSearchService())
+    
+    public let state: BehaviorSubject<ViewModelState<[UserModel]>> = BehaviorSubject(value: .idle)
+    
+    init(userSearchService: UserSearchServiceProtocol) {
+        self.userSearchService = userSearchService
     }
     
-    // Função de busca do usuário
     func searchUser(with username: String) {
         self.loading.onNext(true)
         
-        self.userSearchProvider?.searchUser(username: username, completion: { [weak self] result in
+        self.userSearchService.searchUser(username: username, completion: { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success(let user):
-                    self.user.onNext(user.owner)
-                    self.repositories.onNext(user.repositories)
-                case .failure(let error):
-                    self.error.onNext(error)
+                    case .success(let user):
+                        self.user.onNext(user.owner)
+                        self.repositories.onNext(user.repositories)
+                    case .failure(let error):
+                        self.error.onNext(error)
                 }
                 self.loading.onNext(false)
             }

@@ -7,14 +7,13 @@
 
 import Foundation
 
-protocol UserSearchProviderProtocol {
-    func searchUser(username: String, completion: @escaping(Result<[User], Error>) -> Void)
-    func fetchLanguages(for repository: RepositoryModel, completion: @escaping (String?) -> Void)
+protocol UserSearchServiceProtocol {
+    func searchUser(username: String, completion: @escaping(Result<User, Error>) -> Void)
 }
 
-class UserSearchProvider: UserSearchProviderProtocol {
+class UserSearchService: UserSearchServiceProtocol {
     
-    // Método principal para buscar o usuário e seus repositórios
+    // Função para buscar o usuário e seus repositórios
     func searchUser(username: String, completion: @escaping(Result<User, Error>) -> Void) {
         guard let url = URL(string: "https://api.github.com/users/\(username)/repos") else { return }
         
@@ -28,9 +27,10 @@ class UserSearchProvider: UserSearchProviderProtocol {
             guard let data = data else { return }
             
             do {
+                // Primeiro, buscamos os repositórios
                 var repositories = try JSONDecoder().decode([RepositoryModel].self, from: data)
                 
-                // Buscar informações do usuário (nome e avatar)
+                // Agora, buscamos as informações do usuário (nome e avatar)
                 let userURL = URL(string: "https://api.github.com/users/\(username)")!
                 let userTask = URLSession.shared.dataTask(with: userURL) { (userData, _, userError) in
                     if let userError = userError {
@@ -41,10 +41,10 @@ class UserSearchProvider: UserSearchProviderProtocol {
                     guard let userData = userData else { return }
                     
                     do {
-                        // Decodifica as informações do usuário (nome e avatar)
+                        // Decodificando o usuário com nome e avatar
                         let userModel = try JSONDecoder().decode(UserModel.self, from: userData)
                         
-                        // Buscar linguagens para cada repositório
+                        // Agora buscamos as linguagens para cada repositório
                         let group = DispatchGroup()
                         
                         for index in repositories.indices {
@@ -59,8 +59,9 @@ class UserSearchProvider: UserSearchProviderProtocol {
                             }
                         }
                         
+                        // Quando todas as linguagens forem obtidas
                         group.notify(queue: .main) {
-                            // Finaliza a combinação de dados do usuário e repositórios
+                            // Agora retornamos tanto o usuário quanto os repositórios
                             let user = User(owner: userModel, repositories: repositories)
                             completion(.success(user))
                         }
