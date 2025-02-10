@@ -11,4 +11,6 @@ enum Strings {
     static let buttonTitleSearch = "Search"
     
     static let userSearchTitle = "GitHub Viewer"
+    
+    static let userHeaderColor = "#f7f7f7"
 }

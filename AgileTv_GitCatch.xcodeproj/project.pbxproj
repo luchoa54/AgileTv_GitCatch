@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3DD77CDA3A4C7F867836FDE7 /* Pods_AgileTv_GitCatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB082477483026EA73B4EB0D /* Pods_AgileTv_GitCatch.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		6611994C2D540210002A4894 /* AgileTv_GitCatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgileTv_GitCatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB082477483026EA73B4EB0D /* Pods_AgileTv_GitCatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgileTv_GitCatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E99BB9D1BE24143D4A94EEE1 /* Pods-AgileTv_GitCatch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileTv_GitCatch.release.xcconfig"; path = "Target Support Files/Pods-AgileTv_GitCatch/Pods-AgileTv_GitCatch.release.xcconfig"; sourceTree = "<group>"; };
+		EA2DDDB9BD42AFC418EE40BF /* Pods-AgileTv_GitCatch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgileTv_GitCatch.debug.xcconfig"; path = "Target Support Files/Pods-AgileTv_GitCatch/Pods-AgileTv_GitCatch.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,17 +43,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DD77CDA3A4C7F867836FDE7 /* Pods_AgileTv_GitCatch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		441031AC9AEA46A8156046AA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EA2DDDB9BD42AFC418EE40BF /* Pods-AgileTv_GitCatch.debug.xcconfig */,
+				E99BB9D1BE24143D4A94EEE1 /* Pods-AgileTv_GitCatch.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		661199432D540210002A4894 = {
 			isa = PBXGroup;
 			children = (
 				6611994E2D540210002A4894 /* AgileTv_GitCatch */,
 				6611994D2D540210002A4894 /* Products */,
+				441031AC9AEA46A8156046AA /* Pods */,
+				E1E6A5E2B7DF10D8FAD5A2A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +77,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E1E6A5E2B7DF10D8FAD5A2A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB082477483026EA73B4EB0D /* Pods_AgileTv_GitCatch.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -65,9 +92,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6611995F2D540212002A4894 /* Build configuration list for PBXNativeTarget "AgileTv_GitCatch" */;
 			buildPhases = (
+				298403045E0019023C820CA3 /* [CP] Check Pods Manifest.lock */,
 				661199482D540210002A4894 /* Sources */,
 				661199492D540210002A4894 /* Frameworks */,
 				6611994A2D540210002A4894 /* Resources */,
+				FE559325C6B6950EB19AEA81 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -77,8 +106,6 @@
 				6611994E2D540210002A4894 /* AgileTv_GitCatch */,
 			);
 			name = AgileTv_GitCatch;
-			packageProductDependencies = (
-			);
 			productName = AgileTv_GitCatch;
 			productReference = 6611994C2D540210002A4894 /* AgileTv_GitCatch.app */;
 			productType = "com.apple.product-type.application";
@@ -127,6 +154,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		298403045E0019023C820CA3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgileTv_GitCatch-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE559325C6B6950EB19AEA81 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileTv_GitCatch/Pods-AgileTv_GitCatch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgileTv_GitCatch/Pods-AgileTv_GitCatch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgileTv_GitCatch/Pods-AgileTv_GitCatch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		661199482D540210002A4894 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -140,12 +209,14 @@
 /* Begin XCBuildConfiguration section */
 		661199602D540212002A4894 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA2DDDB9BD42AFC418EE40BF /* Pods-AgileTv_GitCatch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z9J7HJSF2U;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileTv_GitCatch/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -167,12 +238,14 @@
 		};
 		661199612D540212002A4894 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E99BB9D1BE24143D4A94EEE1 /* Pods-AgileTv_GitCatch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z9J7HJSF2U;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AgileTv_GitCatch/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
