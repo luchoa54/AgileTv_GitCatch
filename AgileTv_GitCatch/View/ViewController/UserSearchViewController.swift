@@ -14,8 +14,8 @@ class UserSearchViewController: UIViewController {
     private let userSearchViewModel = UserSearchViewModel.shared
     private let disposeBag = DisposeBag()
     
-    private lazy var myView: View = {
-        return View()
+    private lazy var myView: UserSeachView = {
+        return UserSeachView()
     }()
     
     override func loadView() {
@@ -28,34 +28,44 @@ class UserSearchViewController: UIViewController {
         title = Strings.userSearchTitle
         
         myView.setup()
-        
-        // Binding para o campo de texto (usuário)
+
         myView.button.rx.tap
             .bind { [weak self] in
                 guard let self = self, let username = self.myView.textField.text else { return }
                 self.searchUser(with: username)
             }
             .disposed(by: disposeBag)
-        
-        // Exibir nome do usuário e repositórios
-        userSearchViewModel.user
-            .map { "Nome do usuário: \($0.name)" }
-            .bind(to: myView.userNameLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        userSearchViewModel.repositories
-            .map { repos in
-                repos.map { repo in
-                    let language = repo.language ?? "Não especificada"
-                    return "Repositório: \(repo.name) - Linguagem: \(language)"
+
+        userSearchViewModel.state
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] state in
+                guard let self = self else { return }
+                
+                switch state {
+                case .idle:
+                    break
+                case .loading:
+                    self.showLoading(true)
+                case .success(let user):
+                    self.showLoading(false)
+                case .error(let message):
+                    self.showLoading(false)
+                    self.showAlert(message: message)
                 }
-                .joined(separator: "\n")
-            }
-            .bind(to: myView.reposLabel.rx.text)
+            })
             .disposed(by: disposeBag)
     }
+
+    private func showLoading(_ show: Bool) {
+        myView.loadingIndicator.isHidden = !show
+    }
+
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
-    // Função para iniciar a busca do usuário
     private func searchUser(with username: String) {
         userSearchViewModel.searchUser(with: username)
     }

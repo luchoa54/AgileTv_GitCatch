@@ -10,5 +10,6 @@ enum ViewModelState<T> {
     case idle
     case loading
     case success(T)
-    case failure(Error)
+    case error(String)
 }
+

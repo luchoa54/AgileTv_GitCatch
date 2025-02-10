@@ -13,7 +13,6 @@ protocol UserSearchServiceProtocol {
 
 class UserSearchService: UserSearchServiceProtocol {
     
-    // Função para buscar o usuário e seus repositórios
     func searchUser(username: String, completion: @escaping(Result<User, Error>) -> Void) {
         guard let url = URL(string: "https://api.github.com/users/\(username)/repos") else { return }
         
@@ -27,10 +26,8 @@ class UserSearchService: UserSearchServiceProtocol {
             guard let data = data else { return }
             
             do {
-                // Primeiro, buscamos os repositórios
                 var repositories = try JSONDecoder().decode([RepositoryModel].self, from: data)
                 
-                // Agora, buscamos as informações do usuário (nome e avatar)
                 let userURL = URL(string: "https://api.github.com/users/\(username)")!
                 let userTask = URLSession.shared.dataTask(with: userURL) { (userData, _, userError) in
                     if let userError = userError {
@@ -41,10 +38,8 @@ class UserSearchService: UserSearchServiceProtocol {
                     guard let userData = userData else { return }
                     
                     do {
-                        // Decodificando o usuário com nome e avatar
                         let userModel = try JSONDecoder().decode(UserModel.self, from: userData)
                         
-                        // Agora buscamos as linguagens para cada repositório
                         let group = DispatchGroup()
                         
                         for index in repositories.indices {
@@ -59,9 +54,7 @@ class UserSearchService: UserSearchServiceProtocol {
                             }
                         }
                         
-                        // Quando todas as linguagens forem obtidas
                         group.notify(queue: .main) {
-                            // Agora retornamos tanto o usuário quanto os repositórios
                             let user = User(owner: userModel, repositories: repositories)
                             completion(.success(user))
                         }

@@ -5,46 +5,50 @@
 //  Created by Luciano Uchoa on 05/02/25.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 
 class UserSearchViewModel {
     
-    private var userSearchService: UserSearchServiceProtocol
+    private let userSearchService: UserSearchServiceProtocol
+    private let disposeBag = DisposeBag()
     
-    // Variáveis observáveis
-    public let user: PublishSubject<UserModel> = PublishSubject()
-    public let repositories: PublishSubject<[RepositoryModel]> = PublishSubject()
-    public let loading: PublishSubject<Bool> = PublishSubject()
-    public let error: PublishSubject<Error> = PublishSubject()
-    public let disposeBag = DisposeBag()
-    
-    // Init
+    let user = PublishSubject<User>()
+    let repositories = PublishSubject<[RepositoryModel]>()
+    let errorMessage = PublishSubject<String>()
+
     public static let shared = UserSearchViewModel(userSearchService: UserSearchService())
     
-    public let state: BehaviorSubject<ViewModelState<[UserModel]>> = BehaviorSubject(value: .idle)
+    public let state: BehaviorSubject<ViewModelState<User>> = BehaviorSubject(value: .idle)
     
     init(userSearchService: UserSearchServiceProtocol) {
         self.userSearchService = userSearchService
     }
     
     func searchUser(with username: String) {
-        self.loading.onNext(true)
+        state.onNext(.loading)
         
-        self.userSearchService.searchUser(username: username, completion: { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                    case .success(let user):
-                        self.user.onNext(user.owner)
-                        self.repositories.onNext(user.repositories)
-                    case .failure(let error):
-                        self.error.onNext(error)
-                }
-                self.loading.onNext(false)
+        userSearchService.searchUser(username: username) { [weak self] result in
+            switch result {
+            case .success(let user):
+                self?.state.onNext(.success(user))
+            case .failure(let error):
+                self?.handleError(error)
             }
-        })
+        }
+    }
+    
+    private func handleError(_ error: Error) {
+        let errorMessage: String
+        if error is URLError {
+            errorMessage = "A network error has occurred. Check your Internet connection and try again later."
+        } else if error is DecodingError {
+            errorMessage = "User not found. Please enter another name."
+        } else {
+            errorMessage = error.localizedDescription
+        }
+        state.onNext(.error(errorMessage))
     }
 }
+
 
