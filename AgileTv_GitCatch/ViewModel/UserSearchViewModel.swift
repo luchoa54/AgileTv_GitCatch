@@ -14,6 +14,7 @@ class UserSearchViewModel {
     private let disposeBag = DisposeBag()
     
     let user = PublishSubject<User>()
+    let navigateToDetails = PublishSubject<User>()
     let repositories = PublishSubject<[RepositoryModel]>()
     let errorMessage = PublishSubject<String>()
 
@@ -32,6 +33,7 @@ class UserSearchViewModel {
             switch result {
             case .success(let user):
                 self?.state.onNext(.success(user))
+                self?.navigateToDetails.onNext(user)
             case .failure(let error):
                 self?.handleError(error)
             }
@@ -40,7 +42,9 @@ class UserSearchViewModel {
     
     private func handleError(_ error: Error) {
         let errorMessage: String
-        if error is URLError {
+        if let rateLimitError = error as? RateLimitExceededError {
+            errorMessage = rateLimitError.localizedDescription
+        } else if error is URLError {
             errorMessage = "A network error has occurred. Check your Internet connection and try again later."
         } else if error is DecodingError {
             errorMessage = "User not found. Please enter another name."
@@ -50,5 +54,3 @@ class UserSearchViewModel {
         state.onNext(.error(errorMessage))
     }
 }
-
-

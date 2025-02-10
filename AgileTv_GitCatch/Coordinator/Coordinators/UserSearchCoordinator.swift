@@ -10,10 +10,11 @@ import UIKit
 
 class UserSearchCoordinator: Coordinator {
     var navigationController: UINavigationController
-    let userSearchViewController : UserSearchViewController = UserSearchViewController()
-    
-    init(navigationController:UINavigationController) {
+    var userSearchViewController: UserSearchViewController!
+
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        self.userSearchViewController = UserSearchViewController(coordinator: self)
     }
     
     func start() {
@@ -24,3 +25,5 @@ class UserSearchCoordinator: Coordinator {
         self.navigationController.popToRootViewController(animated: true)
     }
 }
+
+

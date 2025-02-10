@@ -8,19 +8,22 @@
 import Foundation
 import UIKit
 
-class DetailsUserCoordinator:Coordinator {
+class DetailsUserCoordinator: Coordinator {
     var navigationController: UINavigationController
-    let detailsUserViewController : DetailsUserViewController = DetailsUserViewController()
+    let user: User
     
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController, user: User) {
         self.navigationController = navigationController
+        self.user = user
     }
     
     func start() {
-        self.navigationController.pushViewController(self.detailsUserViewController, animated: true)
+        let detailsVC = DetailsUserViewController(user: user)
+        self.navigationController.pushViewController(detailsVC, animated: true)
     }
     
-    func popToRootViewController(){
+    func popToRootViewController() {
         self.navigationController.popToRootViewController(animated: true)
     }
 }
+

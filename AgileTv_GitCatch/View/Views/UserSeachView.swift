@@ -14,6 +14,7 @@ class UserSeachView: UIView {
         textField.placeholder = Strings.placeholderUsername
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.autocapitalizationType = .none
         return textField
     }()
     

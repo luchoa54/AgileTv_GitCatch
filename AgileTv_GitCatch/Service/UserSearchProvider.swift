@@ -23,6 +23,16 @@ class UserSearchService: UserSearchServiceProtocol {
                 return
             }
             
+            // Verificando o status code
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 403 {
+                // Caso o rate limit tenha sido atingido
+                if let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let message = json["message"] as? String, message.contains("rate limit exceeded") {
+                    completion(.failure(RateLimitExceededError()))
+                    return
+                }
+            }
+            
             guard let data = data else { return }
             
             do {
@@ -97,4 +107,12 @@ class UserSearchService: UserSearchServiceProtocol {
         task.resume()
     }
 }
+
+struct RateLimitExceededError: Error {
+    var localizedDescription: String {
+        return "You have exceeded the rate limit for API requests. Please try again later."
+    }
+}
+
+
 

@@ -13,6 +13,16 @@ class UserSearchViewController: UIViewController {
     
     private let userSearchViewModel = UserSearchViewModel.shared
     private let disposeBag = DisposeBag()
+    private let coordinator: UserSearchCoordinator
+
+    init(coordinator: UserSearchCoordinator) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var myView: UserSeachView = {
         return UserSeachView()
@@ -48,6 +58,7 @@ class UserSearchViewController: UIViewController {
                     self.showLoading(true)
                 case .success(let user):
                     self.showLoading(false)
+                    self.navigateToUserDetails(user: user)
                 case .error(let message):
                     self.showLoading(false)
                     self.showAlert(message: message)
@@ -68,5 +79,10 @@ class UserSearchViewController: UIViewController {
     
     private func searchUser(with username: String) {
         userSearchViewModel.searchUser(with: username)
+    }
+    
+    private func navigateToUserDetails(user: User) {
+        let detailsCoordinator = DetailsUserCoordinator(navigationController: coordinator.navigationController, user: user)
+        detailsCoordinator.start()
     }
 }
