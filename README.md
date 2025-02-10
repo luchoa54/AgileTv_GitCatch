@@ -69,7 +69,7 @@ Os principais objetivos foram:
 ## 🗂 Estrutura do Projeto
 
 ```plaintext
-ToDoMoviesDimensa/
+AgileTv_GitCatch/
 ├── Source/
 │   ├── Model/               # Modelos de dados
 │   ├── View/                # Pasta principal para Views e ViewControllers
